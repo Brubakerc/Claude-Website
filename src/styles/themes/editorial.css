@@ -195,3 +195,7 @@
   font-size: var(--h3-size);
   font-weight: 500;
 }
+
+[data-style="editorial"] .titleblock__cell--tags {
+  grid-column: 1 / -1;
+}

@@ -138,3 +138,10 @@
   font-weight: 700;
   line-height: 1.05;
 }
+
+/* Bright studio photos glare against gunmetal; take the edge off in dark mode. */
+@media (prefers-color-scheme: dark) {
+  [data-style="shop"] :is(.hero__image, .card__image, .project__cover-image) {
+    filter: brightness(0.88);
+  }
+}

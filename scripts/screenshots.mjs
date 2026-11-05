@@ -23,6 +23,15 @@ for (const [device, options] of Object.entries(devices)) {
       for (const [name, path] of Object.entries(pages)) {
         if (name === "projects" && device === "phone") continue;
         await page.goto(`${site}${path}?style=${style}`, { waitUntil: "networkidle" });
+        // Scroll through the page so lazy-loaded images load, then wait for all of them.
+        await page.evaluate(async () => {
+          for (let y = 0; y < document.body.scrollHeight; y += innerHeight / 2) {
+            scrollTo(0, y);
+            await new Promise((r) => setTimeout(r, 120));
+          }
+          scrollTo(0, 0);
+          await Promise.all([...document.images].map((img) => img.complete || new Promise((r) => (img.onload = img.onerror = r))));
+        });
         await page.waitForTimeout(1500); // let the hero animation finish
         if (name === "project") {
           await page.locator("model-viewer").scrollIntoViewIfNeeded();

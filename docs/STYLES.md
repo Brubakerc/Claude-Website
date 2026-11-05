@@ -179,4 +179,28 @@ used only for links. No drop caps, no pull quotes.
 
 ## Critique-and-fix log
 
-Filled in during the screenshot review (Phase 5).
+Screenshots are in `docs/screenshots/` (`<style>-<page>-<device>-<mode>.jpg`). They're
+made by the Screenshots workflow; re-run it from the Actions tab after changes.
+
+### Pass 1 (all styles)
+
+| Problem seen | Fix |
+|---|---|
+| With two featured projects, the card grid left an empty third column. | Grid columns now stretch to fill the row (`auto-fit`); a single card is capped at 40 rem so it doesn't fill the page. |
+| The 3D viewer rendered as a thin strip. model-viewer sets its own 150 px height, which overrode `aspect-ratio`. | `height: auto` on the viewer. |
+| Gallery thumbnails left empty columns. | Same `auto-fit` change as cards. |
+| Some images were blank in full-page screenshots (lazy loading). | Screenshot script now scrolls the page and waits for every image. Not a site bug. |
+
+### Pass 1, per style
+
+- **Apple.** "Selected projects" was set at page-title size and left-aligned under a
+  centered hero, so the page lost its center line and the headline competed with the
+  image. Section titles are now centered at section size. On phones the 16:9 hero
+  made the part small; the hero and project covers switch to 4:3 below 40 rem.
+- **Drawing sheet.** The menu's bottom rule ran past the sheet border and crossed it at
+  both sides. The menu is now inset to sit inside the border.
+- **Machine shop.** In dark mode the light studio renders glared against gunmetal and
+  became the brightest thing on the page by far. Cover and card images are dimmed to
+  88% brightness in dark mode only.
+- **Quiet editorial.** In the project facts the tag list was squeezed into an 8 rem
+  cell and wrapped one word per line. Tags now span the full row.

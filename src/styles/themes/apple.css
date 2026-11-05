@@ -146,9 +146,19 @@
 }
 
 [data-style="apple"] .section__title {
-  font-size: var(--h1-size);
-  line-height: var(--h1-leading);
-  letter-spacing: var(--h1-tracking);
+  text-align: center;
+}
+
+[data-style="apple"] .section__more {
+  text-align: center;
+}
+
+/* On phones the part needs more height to read as the hero. */
+@media (max-width: 40rem) {
+  [data-style="apple"] .hero__image,
+  [data-style="apple"] .project__cover-image {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 [data-style="apple"] .tag {
