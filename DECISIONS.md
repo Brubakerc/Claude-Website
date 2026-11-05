@@ -72,3 +72,8 @@ only four lines to build.
 **About and Resume are Markdown files in `src/pages/`** (`about.md`, `resume.md`),
 not a content collection. They are single pages, and plain Markdown with a layout is
 the simplest thing to edit.
+
+**Machine shop display font: Saira Condensed, not Big Shoulders Display.** The
+planned face's Fontsource package installed without the expected weight files, which
+broke the build. Saira Condensed fills the same role (heavy, condensed, industrial)
+and is openly licensed (SIL OFL).

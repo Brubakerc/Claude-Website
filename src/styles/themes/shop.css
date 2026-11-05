@@ -3,8 +3,8 @@
    Gunmetal and steel, heavy industrial type, brass project numbers.
    ────────────────────────────────────────────────────────────────────────── */
 
-@import "@fontsource/big-shoulders-display/700.css";
-@import "@fontsource/big-shoulders-display/800.css";
+@import "@fontsource/saira-condensed/700.css";
+@import "@fontsource/saira-condensed/800.css";
 @import "@fontsource/ibm-plex-sans/400.css";
 @import "@fontsource/ibm-plex-sans/400-italic.css";
 @import "@fontsource/ibm-plex-sans/600.css";
@@ -24,7 +24,7 @@
   --nav-bg: var(--bg);
 
   --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-display: "Saira Condensed", "Arial Narrow", Impact, sans-serif;
   --body-size: 1rem;
   --body-leading: 1.6;
   --body-tracking: 0;

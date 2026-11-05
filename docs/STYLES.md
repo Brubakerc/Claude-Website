@@ -116,8 +116,8 @@ and identifiers only where they mean something.
 | Anodize blue | `#1B5AA6` | `#5AA5EE` | links, focus |
 | Brass | `#6E520C` | `#D0AC4A` | project numbers only |
 
-**Type.** Big Shoulders Display (heavy, condensed, drawn from Chicago's industrial
-signage) for the name and titles. IBM Plex Sans for body text, with tabular figures
+**Type.** Saira Condensed (a squared, engineered condensed face, like lettering on
+machine nameplates) at heavy weights for the name and titles. IBM Plex Sans for body text, with tabular figures
 so numbers line up in spec tables.
 
 **Layout.** Denser than the other styles. Panels are steel plates with a light top
@@ -125,7 +125,7 @@ edge, like light catching a chamfer. Cards show a brass project number ("No. 01"
 because it's the order you set and matches "Project 1 of 3" on the project page.
 
 **The one memorable element.** The display type: the name on the home page and
-project titles are set very large in Big Shoulders at heavy weight, tight.
+project titles are set very large in Saira Condensed at heavy weight, tight.
 
 **Check against generic defaults.** Risk: "near-black with one acid accent." Revised:
 the dark is a blue-grey gunmetal, not #111; the accent is a muted anodize blue used
