@@ -32,6 +32,8 @@ jobs:
         run: if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
       - name: Build
         run: npm run build
+      - name: Check internal links
+        run: node scripts/check-links.mjs
       - name: Test helpers
         run: npm test
       - name: Upload site

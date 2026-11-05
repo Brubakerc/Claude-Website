@@ -1,1 +1,237 @@
-/* apple style: filled in during Phase 4. */
+/* ──────────────────────────────────────────────────────────────────────────
+   Style: Apple
+   Product-page imagery, the system font, a translucent menu bar, and
+   spring-timed motion. Change colors in the two blocks below.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root[data-style="apple"] {
+  --bg: #fbfbfd; /* Studio white */
+  --surface: #f2f2f5; /* Aluminum */
+  --text: #1d1d1f; /* Graphite */
+  --muted: #6e6e73; /* Pewter */
+  --rule: #d2d2d7;
+  --link: #0066cc; /* Signal blue */
+  --accent: #0066cc;
+  --on-accent: #ffffff;
+  --focus: #0066cc;
+  --nav-bg: rgb(251 251 253 / 0.72);
+  --nav-filter: saturate(180%) blur(20px);
+
+  /* System font: SF Pro on Apple devices, the native UI face elsewhere. */
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: var(--font-body);
+  --body-size: 1.0625rem;
+  --body-leading: 1.47;
+  --body-tracking: -0.005em;
+  --small-tracking: 0.005em;
+  --lead-size: clamp(1.1875rem, 1rem + 0.7vw, 1.5rem);
+  --lead-leading: 1.38;
+  --display-size: clamp(2.75rem, 1.6rem + 5.2vw, 5.5rem);
+  --display-leading: 1.05;
+  --display-tracking: -0.03em;
+  --display-weight: 600;
+  --h1-size: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+  --h1-leading: 1.07;
+  --h1-tracking: -0.025em;
+  --h2-size: clamp(1.625rem, 1.3rem + 1.4vw, 2.5rem);
+  --h2-leading: 1.12;
+  --h2-tracking: -0.02em;
+  --h3-size: 1.3125rem;
+  --h3-leading: 1.24;
+  --h3-tracking: -0.012em;
+  --heading-weight: 600;
+
+  --page: 80rem;
+  --radius-s: 10px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style="apple"] {
+    --bg: #000000;
+    --surface: #1c1c1e;
+    --text: #f5f5f7;
+    --muted: #a1a1a6;
+    --rule: #424245;
+    --link: #2997ff;
+    --accent: #2997ff;
+    --on-accent: #000000;
+    --focus: #2997ff;
+    --nav-bg: rgb(22 22 23 / 0.72);
+  }
+}
+
+/* Menu bar: no hard border. A soft blurred edge appears under it only once
+   content is scrolled beneath it (the scroll edge effect). */
+[data-style="apple"] .site-nav {
+  border-bottom: 0;
+  font-size: 0.875rem;
+}
+
+[data-style="apple"] .site-nav::after {
+  content: "";
+  position: absolute;
+  inset: 100% 0 auto;
+  height: 14px;
+  pointer-events: none;
+  background: linear-gradient(var(--nav-bg), transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(black, transparent);
+  mask-image: linear-gradient(black, transparent);
+  opacity: 0;
+}
+
+@supports (animation-timeline: scroll()) {
+  [data-style="apple"] .site-nav::after {
+    animation: apple-edge linear both;
+    animation-timeline: scroll();
+    animation-range: 0 48px;
+  }
+}
+
+@supports not (animation-timeline: scroll()) {
+  [data-style="apple"] .site-nav::after {
+    opacity: 1;
+  }
+}
+
+@keyframes apple-edge {
+  to {
+    opacity: 1;
+  }
+}
+
+[data-style="apple"] .site-nav__links a[aria-current] {
+  font-weight: 500;
+}
+
+/* Product-page hero: big image, centered words. */
+[data-style="apple"] .hero {
+  gap: var(--space-4);
+  padding-block: var(--space-3) var(--space-6);
+  text-align: center;
+}
+
+[data-style="apple"] .hero__media {
+  max-width: 90rem;
+  padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+[data-style="apple"] .hero__image {
+  aspect-ratio: 16 / 9;
+}
+
+[data-style="apple"] .hero__text > * {
+  margin-inline: auto;
+}
+
+[data-style="apple"] .hero__tagline {
+  max-width: 30ch;
+}
+
+[data-style="apple"] .project__intro {
+  padding-block: var(--space-5) var(--space-4);
+  text-align: center;
+}
+
+[data-style="apple"] .project__intro > * {
+  margin-inline: auto;
+}
+
+[data-style="apple"] .project__cover {
+  max-width: 90rem;
+  padding-inline: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+[data-style="apple"] .section__title {
+  font-size: var(--h1-size);
+  line-height: var(--h1-leading);
+  letter-spacing: var(--h1-tracking);
+}
+
+[data-style="apple"] .tag {
+  border-color: transparent;
+  background: var(--surface);
+}
+
+[data-style="apple"] .tag[aria-current] {
+  background: var(--text);
+}
+
+[data-style="apple"] .highlights {
+  padding: var(--space-4) var(--space-4) var(--space-4) calc(var(--space-4) + 0.25rem);
+}
+
+[data-style="apple"] .key-decision__label {
+  color: var(--accent);
+}
+
+/* The one orchestrated moment: on the home page the part materializes (blur and
+   scale settle together), then the words follow. Plays once, on load. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-style="apple"] .hero__image {
+    animation: apple-materialize 1100ms var(--spring) both;
+  }
+
+  [data-style="apple"] .hero__text > * {
+    animation: apple-rise 700ms var(--spring) both;
+  }
+
+  [data-style="apple"] .hero__name {
+    animation-delay: 260ms;
+  }
+
+  [data-style="apple"] .hero__tagline {
+    animation-delay: 340ms;
+  }
+
+  [data-style="apple"] .hero__looking {
+    animation-delay: 420ms;
+  }
+
+  [data-style="apple"] .hero__caption {
+    animation-delay: 500ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-style="apple"] .hero__media,
+  [data-style="apple"] .hero__text {
+    animation: apple-fade 400ms ease both;
+  }
+}
+
+@keyframes apple-materialize {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+    filter: blur(14px);
+  }
+}
+
+@keyframes apple-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes apple-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  [data-style="apple"] .site-nav::after {
+    display: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  [data-style="apple"] .site-nav::after {
+    display: none;
+  }
+}

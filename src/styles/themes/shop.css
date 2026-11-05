@@ -1,1 +1,140 @@
-/* shop style: filled in during Phase 4. */
+/* ──────────────────────────────────────────────────────────────────────────
+   Style: Machine shop
+   Gunmetal and steel, heavy industrial type, brass project numbers.
+   ────────────────────────────────────────────────────────────────────────── */
+
+@import "@fontsource/big-shoulders-display/700.css";
+@import "@fontsource/big-shoulders-display/800.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/400-italic.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+
+:root[data-style="shop"] {
+  --bg: #e4e6e9; /* Bead blast */
+  --surface: #d5d9de; /* Machined steel */
+  --text: #16191d; /* Bar stock */
+  --muted: #4a515a; /* Scale */
+  --rule: #b3b9c0;
+  --link: #1b5aa6; /* Anodize blue */
+  --accent: #1b5aa6;
+  --on-accent: #ffffff;
+  --focus: #1b5aa6;
+  --brass: #6e520c;
+  --edge: rgb(255 255 255 / 0.7); /* light catching a chamfer */
+  --nav-bg: var(--bg);
+
+  --font-body: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body-size: 1rem;
+  --body-leading: 1.6;
+  --body-tracking: 0;
+  --lead-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
+  --display-size: clamp(3.5rem, 1.8rem + 8vw, 8.5rem);
+  --display-leading: 0.9;
+  --display-tracking: -0.01em;
+  --display-weight: 800;
+  --h1-size: clamp(2.75rem, 1.8rem + 4vw, 4.75rem);
+  --h1-leading: 0.95;
+  --h1-tracking: -0.005em;
+  --h2-size: clamp(1.875rem, 1.4rem + 1.8vw, 2.75rem);
+  --h2-leading: 1;
+  --h2-tracking: 0;
+  --h3-size: 1.625rem;
+  --h3-leading: 1.05;
+  --h3-tracking: 0.005em;
+  --heading-weight: 700;
+
+  --page: 78rem;
+  --radius-s: 3px;
+  --radius-m: 4px;
+  --radius-l: 6px;
+  --radius-pill: 3px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style="shop"] {
+    --bg: #1b1e22; /* Gunmetal */
+    --surface: #262a30;
+    --text: #d9dde2;
+    --muted: #9ba2ab;
+    --rule: #3a4048;
+    --link: #5aa5ee;
+    --accent: #5aa5ee;
+    --on-accent: #0c1a2a;
+    --focus: #5aa5ee;
+    --brass: #d0ac4a;
+    --edge: rgb(255 255 255 / 0.09);
+  }
+}
+
+[data-style="shop"] body {
+  font-variant-numeric: tabular-nums;
+}
+
+[data-style="shop"] .site-nav {
+  border-bottom-color: var(--rule);
+}
+
+[data-style="shop"] .site-nav__name {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+[data-style="shop"] .hero__name {
+  max-width: 10ch;
+}
+
+/* Steel plates: a bright top edge instead of a drop shadow. */
+[data-style="shop"] :is(.highlights, .key-decision, .callout, .pager__link, .card__media, .model3d__viewer) {
+  box-shadow: inset 0 1px 0 var(--edge);
+}
+
+[data-style="shop"] .card__no {
+  display: block;
+  color: var(--brass);
+  font-weight: 600;
+  font-size: var(--small-size);
+}
+
+[data-style="shop"] .card__title {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+[data-style="shop"] .card-grid {
+  gap: var(--space-4);
+}
+
+[data-style="shop"] .titleblock dd {
+  font-weight: 600;
+}
+
+[data-style="shop"] .titleblock__cell--number dd {
+  color: var(--brass);
+}
+
+[data-style="shop"] .key-decision__label {
+  color: var(--brass);
+}
+
+[data-style="shop"] .tag {
+  border-color: var(--rule);
+  background: var(--surface);
+}
+
+[data-style="shop"] .tag[aria-current] {
+  background: var(--text);
+}
+
+[data-style="shop"] .prose th {
+  color: var(--text);
+}
+
+[data-style="shop"] .pager__title {
+  font-family: var(--font-display);
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.05;
+}

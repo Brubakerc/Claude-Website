@@ -33,6 +33,11 @@ export default defineConfig({
     rehypePlugins: [rehypeTodo],
   },
   vite: {
+    build: {
+      // The 3D viewer (model-viewer + three.js) is one ~1 MB file, ~300 KB compressed.
+      // It only loads on pages that show a 3D model, so the size is expected.
+      chunkSizeWarningLimit: 1200,
+    },
     resolve: {
       alias: {
         "@active-styles": fileURLToPath(new URL(styleCss, import.meta.url)),
