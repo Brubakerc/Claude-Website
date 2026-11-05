@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import site from "../site.config";
+import { isCurrent, url } from "../lib/util";
+
+const hasUpdates = site.showUpdates && (await getCollection("updates")).length > 0;
+const items = site.nav.filter((item) => item.href !== "updates/" || hasUpdates);
+const path = Astro.url.pathname;
+---
+
+<header class="site-nav" data-nav>
+  <nav aria-label="Main">
+    <a class="site-nav__name press" href={url()} aria-current={path.replace(/\/$/, "") === url().replace(/\/$/, "") ? "page" : undefined}>
+      {site.name}
+    </a>
+    <ul class="site-nav__links">
+      {
+        items.map((item) => (
+          <li>
+            <a class="press" href={url(item.href)} aria-current={isCurrent(path, item.href) ? "page" : undefined}>
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>

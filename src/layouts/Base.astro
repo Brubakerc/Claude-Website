@@ -1,0 +1,61 @@
+---
+// The frame around every page: <head>, menu, footer, and the active style.
+import "../styles/base.css";
+import "@active-styles";
+import site, { styles } from "../site.config";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import StyleSwitcher from "../components/StyleSwitcher.astro";
+import { plain, url } from "../lib/util";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string; // absolute or site path to a social preview image
+}
+const { title, description = site.tagline, image } = Astro.props;
+const pageTitle = title ? `${plain(title)} | ${site.name}` : site.name;
+const ogImage = image ? new URL(image, Astro.site).href : undefined;
+const styleNames = Object.keys(styles);
+---
+
+<!doctype html>
+<html lang="en" data-style={site.style}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={plain(description)} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={plain(description)} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <link rel="icon" href={url("favicon.svg")} type="image/svg+xml" />
+    {
+      site.showStyleSwitcher && (
+        <script is:inline define:vars={{ styleNames }}>
+          // Picks the style before the page paints: ?style= link first, then the last choice.
+          try {
+            const asked = new URLSearchParams(location.search).get("style");
+            if (asked && styleNames.includes(asked)) localStorage.setItem("style", asked);
+            const saved = localStorage.getItem("style");
+            if (saved && styleNames.includes(saved)) document.documentElement.dataset.style = saved;
+          } catch {}
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    {site.showStyleSwitcher && <StyleSwitcher />}
+    <script is:inline>
+      // Lets :active press styles show instantly on iOS Safari.
+      document.addEventListener("touchstart", () => {}, { passive: true });
+    </script>
+  </body>
+</html>

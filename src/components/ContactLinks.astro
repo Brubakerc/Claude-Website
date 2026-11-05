@@ -1,0 +1,22 @@
+---
+import site from "../site.config";
+
+const links = [
+  site.email && { label: "Email", detail: site.email, href: `mailto:${site.email}` },
+  site.linkedin && { label: "LinkedIn", href: site.linkedin },
+  site.github && { label: "GitHub", href: site.github },
+].filter(Boolean) as { label: string; detail?: string; href: string }[];
+---
+
+<ul class="contact-links">
+  {
+    links.map((l) => (
+      <li>
+        <a class="press" href={l.href}>
+          {l.label}
+          {l.detail && <span class="contact-links__detail">{l.detail}</span>}
+        </a>
+      </li>
+    ))
+  }
+</ul>

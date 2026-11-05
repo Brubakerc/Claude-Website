@@ -1,0 +1,26 @@
+---
+// The style picker. Only built when showStyleSwitcher is true in src/site.config.ts.
+import { styles } from "../site.config";
+---
+
+<div class="style-switcher">
+  <label for="style-picker">Style</label>
+  <select id="style-picker">
+    {Object.entries(styles).map(([value, label]) => <option value={value}>{label}</option>)}
+  </select>
+</div>
+
+<script>
+  const picker = document.querySelector<HTMLSelectElement>("#style-picker")!;
+  picker.value = document.documentElement.dataset.style ?? picker.value;
+  picker.addEventListener("change", () => {
+    document.documentElement.dataset.style = picker.value;
+    try {
+      localStorage.setItem("style", picker.value);
+    } catch {}
+    // Keep the address shareable: copying it opens the site in this style.
+    const link = new URL(location.href);
+    link.searchParams.set("style", picker.value);
+    history.replaceState(history.state, "", link);
+  });
+</script>
