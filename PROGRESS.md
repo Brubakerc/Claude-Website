@@ -13,12 +13,12 @@
 |---|---|
 | 0. Setup | done |
 | 1. Scaffold | done (CI build passes) |
-| 2. Templates and components | done, awaiting CI |
-| 3. Placeholder content and media | done, awaiting CI |
-| 4. Styles | not started |
-| 5. Quality | not started |
-| 6. Docs | not started |
-| 7. Morning report | not started |
+| 2. Templates and components | done |
+| 3. Placeholder content and media | done |
+| 4. Styles | done |
+| 5. Quality | in progress: screenshot review |
+| 6. Docs | done |
+| 7. Morning report | drafted |
 
 ## Done
 
@@ -35,10 +35,18 @@
 - Phase 3: three sample projects, template folder, sample update, renders and GLBs
   from `scripts/make_placeholder_media.py`.
 
+- Phase 4: plans in `docs/STYLES.md`; themes in `src/styles/themes/`. Switcher in
+  `src/components/StyleSwitcher.astro` + `src/styles/switcher.css`.
+- Phase 5 so far: CI build has zero Astro warnings; `scripts/check-links.mjs`
+  passes (230 internal links); palettes pass AA in both modes.
+- Phase 6: all four docs in `docs/`, plus `scripts/convert_to_glb.py`.
+
 ## Next
 
-- Check the CI build for the Phase 2–3 push; fix errors.
-- Phase 4: plan styles in docs/STYLES.md, then build the four theme files.
+- Review `docs/screenshots/` (made by the Screenshots workflow; push a commit with
+  `[screenshots]` in its message to refresh), fix what looks off, log fixes in
+  docs/STYLES.md.
+- Finalize MORNING_REPORT.md.
 
 ## Blocked
 
