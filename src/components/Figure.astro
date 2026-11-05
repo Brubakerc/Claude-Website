@@ -1,0 +1,19 @@
+---
+// An image with a caption. In a project file:
+//   <Figure caption="What the reader should notice.">
+//
+//   ![Describe the image for someone who can't see it](./photo.jpg)
+//
+//   </Figure>
+import { todo } from "../lib/util";
+
+interface Props {
+  caption?: string;
+}
+const { caption } = Astro.props;
+---
+
+<figure class="figure">
+  <slot />
+  {caption && <figcaption set:html={todo(caption)} />}
+</figure>

@@ -1,0 +1,38 @@
+---
+import { Image } from "astro:assets";
+import type { Project } from "../lib/projects";
+import { slugifyTag, statusLabel, todo, url } from "../lib/util";
+
+interface Props {
+  project: Project;
+  number: number; // position in the full project list, starting at 1
+  heading?: "h2" | "h3";
+}
+const { project, number, heading: Heading = "h3" } = Astro.props;
+const { data, id } = project;
+---
+
+<li class="card" data-tags={data.tags.map(slugifyTag).join(" ")}>
+  <a class="card__link press" href={url(`projects/${id}/`)}>
+    <div class="card__media">
+      <Image
+        class="card__image vt-cover"
+        style={`--vt: cover-${id}`}
+        src={data.cover}
+        alt=""
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 60rem) 30rem, (min-width: 40rem) 50vw, 100vw"
+      />
+    </div>
+    <div class="card__body">
+      <p class="card__no">No. {String(number).padStart(2, "0")}</p>
+      <Heading class="card__title" set:html={todo(data.title)} />
+      <p class="card__summary" set:html={todo(data.summary)} />
+      <p class="card__meta">
+        <span class={`status status--${data.status}`}>{statusLabel[data.status]}</span>
+        {data.dates && <span class="card__dates">{data.dates}</span>}
+        {data.draft && <span class="status status--draft">Draft</span>}
+      </p>
+    </div>
+  </a>
+</li>

@@ -1,0 +1,18 @@
+---
+// A grid of images that opens a full-screen viewer when tapped.
+//   <Gallery>
+//
+//   ![First image description](./one.jpg "Optional caption")
+//   ![Second image description](./two.jpg)
+//
+//   </Gallery>
+---
+
+<div class="gallery" data-gallery>
+  <slot />
+</div>
+
+<script>
+  import { initGalleries } from "../scripts/lightbox";
+  initGalleries();
+</script>

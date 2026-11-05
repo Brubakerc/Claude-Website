@@ -1,8 +1,65 @@
 ---
+import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import ContactLinks from "../components/ContactLinks.astro";
 import site from "../site.config";
+import { getProjects } from "../lib/projects";
+import { todo, url } from "../lib/util";
+
+const projects = await getProjects();
+const featured = projects.filter((p) => p.data.featured);
+const lead = featured[0] ?? projects[0];
+const shown = featured.length ? featured : projects.slice(0, 3);
 ---
 
 <Base>
-  <h1>{site.name}</h1>
+  <section class="hero" aria-labelledby="hero-name">
+    {
+      lead && (
+        <figure class="hero__media">
+          <Image
+            class="hero__image"
+            src={lead.data.cover}
+            alt={lead.data.coverAlt}
+            widths={[640, 960, 1280, 1920, 2400]}
+            sizes="(min-width: 90rem) 90rem, 100vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </figure>
+      )
+    }
+    <div class="hero__text">
+      <h1 class="hero__name" id="hero-name">{site.name}</h1>
+      <p class="hero__tagline" set:html={todo(site.tagline)} />
+      {site.lookingFor && <p class="hero__looking" set:html={todo(site.lookingFor)} />}
+      {
+        lead && (
+          <p class="hero__caption">
+            Pictured: <a href={url(`projects/${lead.id}/`)} set:html={todo(lead.data.title)} />
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  {
+    shown.length > 0 && (
+      <section class="section wrap" aria-labelledby="featured-heading">
+        <h2 class="section__title" id="featured-heading">Selected projects</h2>
+        <ul class="card-grid">
+          {shown.map((p) => <ProjectCard project={p} number={projects.indexOf(p) + 1} />)}
+        </ul>
+        <p class="section__more">
+          <a class="press" href={url("projects/")}>See all {projects.length} projects</a>
+        </p>
+      </section>
+    )
+  }
+
+  <section class="section wrap contact" aria-labelledby="contact-heading">
+    <h2 class="section__title" id="contact-heading">Contact</h2>
+    <ContactLinks />
+  </section>
 </Base>

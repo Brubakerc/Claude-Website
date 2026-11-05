@@ -1,0 +1,18 @@
+---
+import Base from "../../layouts/Base.astro";
+import ProjectIndex from "../../components/ProjectIndex.astro";
+import { getProjects, getTags } from "../../lib/projects";
+
+const projects = await getProjects();
+const n = projects.length;
+---
+
+<Base title="Projects" description="All projects, newest work and older work, with tags to filter by.">
+  <ProjectIndex
+    title="Projects"
+    intro={`${n} ${n === 1 ? "project" : "projects"}. Pick a tag to narrow the list.`}
+    all={projects}
+    shown={projects}
+    tags={getTags(projects)}
+  />
+</Base>

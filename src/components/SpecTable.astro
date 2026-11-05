@@ -1,0 +1,23 @@
+---
+// A table of numbers with units. Put a normal Markdown table inside:
+//   <SpecTable caption="Measured results">
+//
+//   | Quantity | Value | Unit |
+//   |---|---|---|
+//   | Mass | 412 | g |
+//
+//   </SpecTable>
+import { todo } from "../lib/util";
+
+interface Props {
+  caption?: string;
+}
+const { caption } = Astro.props;
+---
+
+<figure class="spec-table">
+  <div class="spec-table__scroll" tabindex="0" role="region" aria-label={caption ?? "Specifications"}>
+    <slot />
+  </div>
+  {caption && <figcaption set:html={todo(caption)} />}
+</figure>

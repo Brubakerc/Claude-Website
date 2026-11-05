@@ -1,0 +1,32 @@
+---
+// Layout for simple Markdown pages like about.md and resume.md.
+import fs from "node:fs";
+import path from "node:path";
+import Base from "./Base.astro";
+import { todo, url } from "../lib/util";
+
+const { frontmatter } = Astro.props;
+// The download button appears only once public/resume.pdf exists.
+const hasPdf = frontmatter.resumePdf && fs.existsSync(path.join(process.cwd(), "public", "resume.pdf"));
+---
+
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <article class={`page page--${frontmatter.kind ?? "text"}`}>
+    <header class="wrap page-head">
+      <h1 class="page-head__title">{frontmatter.title}</h1>
+      {frontmatter.intro && <p class="page-head__intro" set:html={todo(frontmatter.intro)} />}
+      {
+        hasPdf && (
+          <p class="page-head__action">
+            <a class="button press" href={url("resume.pdf")} download>
+              Download resume PDF
+            </a>
+          </p>
+        )
+      }
+    </header>
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</Base>

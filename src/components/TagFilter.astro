@@ -1,0 +1,32 @@
+---
+// Tag links. They go to real tag pages, so they work without JavaScript.
+// On the main Projects page a small script filters in place instead.
+import { url } from "../lib/util";
+
+interface Props {
+  tags: { slug: string; label: string }[];
+  current?: string;
+}
+const { tags, current } = Astro.props;
+---
+
+{
+  tags.length > 0 && (
+    <nav class="tag-filter" aria-label="Filter projects by tag">
+      <ul>
+        <li>
+          <a class="tag press" href={url("projects/")} data-tag="" aria-current={!current ? "page" : undefined}>
+            All
+          </a>
+        </li>
+        {tags.map((t) => (
+          <li>
+            <a class="tag press" href={url(`projects/tags/${t.slug}/`)} data-tag={t.slug} aria-current={current === t.slug ? "page" : undefined}>
+              {t.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

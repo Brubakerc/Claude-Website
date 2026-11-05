@@ -1,0 +1,18 @@
+---
+// A highlighted note box. type is "note", "confidential", or "todo".
+//   <Callout type="note">Text of the note.</Callout>
+interface Props {
+  type?: string;
+  title?: string;
+}
+const labels: Record<string, string> = { note: "Note", confidential: "Confidential", todo: "To do" };
+const { type = "note", title } = Astro.props;
+if (!(type in labels)) {
+  throw new Error(`<Callout type="${type}"> isn't a callout type. Use type="note", type="confidential", or type="todo".`);
+}
+---
+
+<aside class={`callout callout--${type}`}>
+  <p class="callout__label">{title ?? labels[type]}</p>
+  <div class="callout__body"><slot /></div>
+</aside>
