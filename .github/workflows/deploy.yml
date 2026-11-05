@@ -34,6 +34,8 @@ jobs:
         run: npm run build
       - name: Check internal links
         run: node scripts/check-links.mjs
+      - name: Check home page weight
+        run: node scripts/page-weight.mjs
       - name: Test helpers
         run: npm test
       - name: Upload site
@@ -41,6 +43,15 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
+      - name: Check the build with the style picker turned off
+        # Runs after the upload, so the published site is unaffected.
+        run: |
+          sed -i 's/showStyleSwitcher: true/showStyleSwitcher: false/' src/site.config.ts
+          npm run build
+          if grep -q 'style-switcher' dist/index.html; then echo "Style picker still present"; exit 1; fi
+          styles=$(cat dist/_astro/*.css | grep -oE 'data-style="?(apple|drawing|shop|editorial)' | tr -d '"' | sort -u | wc -l)
+          if [ "$styles" -gt 1 ]; then echo "Other styles' CSS still included"; exit 1; fi
+          echo "OK: picker and other styles left out."
 
   deploy:
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
