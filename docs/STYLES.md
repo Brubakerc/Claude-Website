@@ -197,6 +197,8 @@ made by the Screenshots workflow; re-run it from the Actions tab after changes.
   centered hero, so the page lost its center line and the headline competed with the
   image. Section titles are now centered at section size. On phones the 16:9 hero
   made the part small; the hero and project covers switch to 4:3 below 40 rem.
+  Pass 2: the contact links stayed left-aligned under the now-centered heading;
+  centered them.
 - **Drawing sheet.** The menu's bottom rule ran past the sheet border and crossed it at
   both sides. The menu is now inset to sit inside the border.
 - **Machine shop.** In dark mode the light studio renders glared against gunmetal and

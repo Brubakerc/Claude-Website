@@ -245,3 +245,7 @@
     display: none;
   }
 }
+
+[data-style="apple"] .contact .contact-links {
+  justify-content: center;
+}
