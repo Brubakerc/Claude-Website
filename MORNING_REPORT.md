@@ -2,8 +2,10 @@
 
 > **Heads-up:** the npm and Python package registries were blocked in the session
 > that built this, so nothing could be installed or run locally. Every build was
-> checked by GitHub Actions instead: the final build passes with no warnings, and
-> every internal link resolves. Screenshots came from the same CI machine.
+> checked by GitHub Actions instead. The final build passes with no warnings, all 230
+> internal links resolve with the base path, the home page is under 1 MB even counting
+> every style's fonts (832 KB), and a second build with the style picker off passes.
+> These checks run on every push.
 
 ## 1. Get the site live (about 5 minutes)
 
@@ -50,7 +52,8 @@ Compare them live with the **Style** picker in the bottom-right corner, or with
 - **Machine shop:** gunmetal and steel, heavy condensed type, brass project numbers.
 - **Quiet editorial:** one serif, one reading column, full-bleed cover images.
 
-Screenshots (desktop and phone, light and dark): `docs/screenshots/`.
+Screenshots (desktop and phone, light and dark): `docs/screenshots/`. To refresh
+them, run the "Screenshots" workflow from the Actions tab.
 Design notes: `docs/STYLES.md`.
 
 ## 4. Decisions you might want to change

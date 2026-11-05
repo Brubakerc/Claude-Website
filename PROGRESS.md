@@ -16,9 +16,9 @@
 | 2. Templates and components | done |
 | 3. Placeholder content and media | done |
 | 4. Styles | done |
-| 5. Quality | in progress: screenshot review |
+| 5. Quality | done |
 | 6. Docs | done |
-| 7. Morning report | drafted |
+| 7. Morning report | done |
 
 ## Done
 
@@ -41,12 +41,17 @@
   passes (230 internal links); palettes pass AA in both modes.
 - Phase 6: all four docs in `docs/`, plus `scripts/convert_to_glb.py`.
 
+- Phase 5: two screenshot review passes (fixes logged in docs/STYLES.md). CI now
+  also checks home page weight (`scripts/page-weight.mjs`) and builds once with the
+  style picker off to confirm it and the other styles are left out.
+- Phase 7: MORNING_REPORT.md.
+
 ## Next
 
-- Review `docs/screenshots/` (made by the Screenshots workflow; push a commit with
-  `[screenshots]` in its message to refresh), fix what looks off, log fixes in
-  docs/STYLES.md.
-- Finalize MORNING_REPORT.md.
+All phases are done. Possible follow-ups for a future session:
+- Commit a `package-lock.json` (needs npm access).
+- Try `scripts/convert_to_glb.py` on a real STL/STEP (couldn't install trimesh here).
+- Try the gallery gestures and press feedback on a real phone.
 
 ## Blocked
 
