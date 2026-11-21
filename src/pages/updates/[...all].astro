@@ -1,0 +1,64 @@
+---
+// The Updates page: short, dated build-log posts from src/content/updates/.
+// It is only built when showUpdates is true and at least one post exists.
+import { Image } from "astro:assets";
+import { getCollection, getEntry, render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import site from "../../site.config";
+import { todo, url } from "../../lib/util";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("updates");
+  return site.showUpdates && posts.length > 0 ? [{ params: { all: undefined } }] : [];
+}
+
+const posts = (await getCollection("updates")).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const items = await Promise.all(
+  posts.map(async (post) => {
+    const project = post.data.project ? await getEntry(post.data.project) : undefined;
+    const linked = project && (import.meta.env.DEV || !project.data.draft) ? project : undefined;
+    return { post, project: linked, Content: (await render(post)).Content };
+  }),
+);
+const format = (d: Date) => d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+---
+
+<Base title="Updates" description="Short build-log posts: what I'm working on and what I learned.">
+  <div class="wrap page-head">
+    <h1 class="page-head__title">Updates</h1>
+    <p class="page-head__intro">Short notes from the bench, newest first.</p>
+  </div>
+  <ol class="updates">
+    {
+      items.map(({ post, project, Content }) => (
+        <li class="update">
+          <article aria-labelledby={`update-${post.id}`}>
+            <header class="update__head">
+              <time class="update__date" datetime={post.data.date.toISOString().slice(0, 10)}>
+                {format(post.data.date)}
+              </time>
+              <h2 class="update__title" id={`update-${post.id}`} set:html={todo(post.data.title)} />
+              {project && (
+                <p class="update__project">
+                  Part of <a href={url(`projects/${project.id}/`)} set:html={todo(project.data.title)} />
+                </p>
+              )}
+            </header>
+            {post.data.image && (
+              <Image
+                class="update__image"
+                src={post.data.image}
+                alt={post.data.imageAlt ?? ""}
+                widths={[640, 1280]}
+                sizes="(min-width: 48rem) 42rem, 100vw"
+              />
+            )}
+            <div class="update__body prose">
+              <Content />
+            </div>
+          </article>
+        </li>
+      ))
+    }
+  </ol>
+</Base>

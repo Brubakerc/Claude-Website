@@ -1,0 +1,227 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Style: Drawing sheet
+   Vellum and lead in light mode, a blueprint in dark mode. A title block holds
+   the project facts; dimension lines mark section starts.
+   ────────────────────────────────────────────────────────────────────────── */
+
+@import "@fontsource/barlow/400.css";
+@import "@fontsource/barlow/400-italic.css";
+@import "@fontsource/barlow/600.css";
+@import "@fontsource/barlow-condensed/500.css";
+@import "@fontsource/barlow-condensed/600.css";
+
+:root[data-style="drawing"] {
+  --bg: #f6f7f4; /* Vellum */
+  --surface: #eceee9; /* Sheet */
+  --text: #20242a; /* Lead */
+  --muted: #5a616b; /* Construction */
+  --rule: #9aa1a9;
+  --link: #1d4f91; /* Drafting blue */
+  --accent: #1d4f91;
+  --on-accent: #ffffff;
+  --focus: #1d4f91;
+  --redline: #b42318;
+  --dim: var(--link); /* dimension lines */
+  --nav-bg: var(--bg);
+
+  --font-body: "Barlow", "Arial Narrow", Arial, sans-serif;
+  --font-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body-size: 1.0625rem;
+  --body-leading: 1.6;
+  --body-tracking: 0.003em;
+  --lead-size: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --display-size: clamp(2.75rem, 1.8rem + 4.5vw, 5.25rem);
+  --display-leading: 0.98;
+  --display-tracking: -0.01em;
+  --display-weight: 600;
+  --h1-size: clamp(2.25rem, 1.7rem + 2.6vw, 3.5rem);
+  --h1-leading: 1;
+  --h1-tracking: -0.005em;
+  --h2-size: clamp(1.625rem, 1.35rem + 1.2vw, 2.25rem);
+  --h2-leading: 1.05;
+  --h2-tracking: 0;
+  --h3-size: 1.375rem;
+  --h3-leading: 1.15;
+  --h3-tracking: 0.005em;
+  --heading-weight: 600;
+
+  --radius-s: 0;
+  --radius-m: 0;
+  --radius-l: 0;
+  --radius-pill: 0;
+  --line: 1px solid var(--text);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-style="drawing"] {
+    --bg: #0e2a47; /* Cyanotype */
+    --surface: #143458;
+    --text: #e9f0f7;
+    --muted: #a9bed3;
+    --rule: #4f6f92;
+    --link: #9cc7f0;
+    --accent: #9cc7f0;
+    --on-accent: #0e2a47;
+    --focus: #9cc7f0;
+    --redline: #ff9b8f;
+  }
+}
+
+/* The sheet border around the page. */
+[data-style="drawing"] body::before {
+  content: "";
+  position: fixed;
+  inset: clamp(4px, 0.8vw, 10px);
+  z-index: 30;
+  border: 1px solid var(--rule);
+  pointer-events: none;
+}
+
+[data-style="drawing"] .site-nav {
+  border-bottom: var(--line);
+}
+
+[data-style="drawing"] .site-nav__name {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+[data-style="drawing"] .hero__image,
+[data-style="drawing"] .project__cover-image,
+[data-style="drawing"] .card__media,
+[data-style="drawing"] .prose img,
+[data-style="drawing"] .model3d__viewer,
+[data-style="drawing"] .update__image {
+  border: var(--line);
+}
+
+[data-style="drawing"] .status--in-progress::before {
+  background: var(--redline);
+}
+
+[data-style="drawing"] .status::before {
+  border-radius: 0;
+}
+
+[data-style="drawing"] .tag {
+  border-color: var(--text);
+}
+
+/* The title block: ruled cells, small condensed capitals for labels. */
+[data-style="drawing"] .titleblock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  border: 2px solid var(--text);
+  background: var(--text);
+}
+
+[data-style="drawing"] .titleblock__cell {
+  flex: 1 1 9rem;
+  padding: 0.5rem 0.75rem 0.6rem;
+  background: var(--bg);
+}
+
+[data-style="drawing"] .titleblock__cell--tags {
+  flex-basis: 100%;
+}
+
+[data-style="drawing"] .titleblock dt {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+[data-style="drawing"] .titleblock dd {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+[data-style="drawing"] :is(.highlights, .key-decision, .callout, .pager__link) {
+  border: var(--line);
+  background: transparent;
+}
+
+[data-style="drawing"] .highlights__title,
+[data-style="drawing"] .key-decision__label,
+[data-style="drawing"] .callout__label {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+[data-style="drawing"] .callout {
+  border-left-width: 4px;
+  border-left-color: var(--callout-color);
+}
+
+/* Dimension lines: section headings in long text sit under a line that spans
+   the text column, with extension marks and arrowheads at both ends. */
+[data-style="drawing"] .prose > h2,
+[data-style="drawing"] .section__title {
+  position: relative;
+  padding-top: 1.5rem;
+}
+
+[data-style="drawing"] .prose > h2::before,
+[data-style="drawing"] .section__title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 13px;
+  background: var(--dim);
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 3.5 12 1v5z'/%3E%3C/svg%3E") 1px 50% / 12px 7px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M12 3.5 0 1v5z'/%3E%3C/svg%3E") calc(100% - 1px) 50% / 12px 7px no-repeat,
+    linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) 1px no-repeat,
+    linear-gradient(#000 0 0) 0 0 / 1px 100% no-repeat,
+    linear-gradient(#000 0 0) 100% 0 / 1px 100% no-repeat;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 3.5 12 1v5z'/%3E%3C/svg%3E") 1px 50% / 12px 7px no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M12 3.5 0 1v5z'/%3E%3C/svg%3E") calc(100% - 1px) 50% / 12px 7px no-repeat,
+    linear-gradient(#000 0 0) 50% 50% / calc(100% - 8px) 1px no-repeat,
+    linear-gradient(#000 0 0) 0 0 / 1px 100% no-repeat,
+    linear-gradient(#000 0 0) 100% 0 / 1px 100% no-repeat;
+}
+
+[data-style="drawing"] .prose > h2 {
+  margin-top: 2.6em;
+}
+
+[data-style="drawing"] .prose :is(th, td) {
+  border: 1px solid var(--rule);
+}
+
+[data-style="drawing"] .prose th {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+[data-style="drawing"] :is(.figure, .model3d, .spec-table) figcaption {
+  font-style: italic;
+}
+
+[data-style="drawing"] .pager {
+  border-top: 0;
+}
+
+@media (prefers-contrast: more) {
+  [data-style="drawing"] body::before {
+    border-color: var(--text);
+  }
+}
+
+/* Keep the menu's rule inside the sheet border instead of crossing it. */
+[data-style="drawing"] .site-nav {
+  margin-inline: clamp(4px, 0.8vw, 10px);
+}

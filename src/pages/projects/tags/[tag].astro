@@ -1,0 +1,28 @@
+---
+import Base from "../../../layouts/Base.astro";
+import ProjectIndex from "../../../components/ProjectIndex.astro";
+import { getProjects, getTags } from "../../../lib/projects";
+import { slugifyTag } from "../../../lib/util";
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return getTags(projects).map((tag) => ({ params: { tag: tag.slug }, props: { label: tag.label } }));
+}
+
+const { tag } = Astro.params;
+const { label } = Astro.props;
+const projects = await getProjects();
+const shown = projects.filter((p) => p.data.tags.some((t) => slugifyTag(t) === tag));
+const n = shown.length;
+---
+
+<Base title={`Projects tagged ${label}`}>
+  <ProjectIndex
+    title={`Projects tagged ${label}`}
+    intro={`${n} ${n === 1 ? "project" : "projects"} tagged ${label}.`}
+    all={projects}
+    shown={shown}
+    tags={getTags(projects)}
+    current={tag}
+  />
+</Base>

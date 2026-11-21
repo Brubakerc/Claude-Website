@@ -1,0 +1,6 @@
+/* Used when showStyleSwitcher is true: every style plus the picker. */
+@import "./themes/apple.css";
+@import "./themes/drawing.css";
+@import "./themes/shop.css";
+@import "./themes/editorial.css";
+@import "./switcher.css";

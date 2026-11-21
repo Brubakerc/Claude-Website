@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import { url } from "../lib/util";
+---
+
+<Base title="Page not found">
+  <div class="wrap page-head not-found">
+    <h1 class="page-head__title">Page not found</h1>
+    <p class="page-head__intro">The address may be misspelled, or the page may have moved.</p>
+    <p class="not-found__links">
+      <a class="button press" href={url()}>Go to the home page</a>
+      <a class="press" href={url("projects/")}>See all projects</a>
+    </p>
+  </div>
+</Base>

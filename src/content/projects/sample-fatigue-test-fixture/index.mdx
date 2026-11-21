@@ -1,0 +1,49 @@
+---
+title: "Sample: fatigue test fixture"
+summary: "Sample project. A fixture and load adapter for running 10⁶-cycle fatigue tests on small brackets in the lab's servo-hydraulic frame."
+role: "Fixture designer"
+dates: "Sep–Dec 2025"
+status: ongoing
+featured: true
+order: 2
+tags: ["Fixturing", "Testing", "Machining"]
+cover: ./cover.jpg
+coverAlt: "Turned steel load adapter with a wide base and a threaded stud, on a gray studio backdrop."
+highlights:
+  - "Setup time cut from 40 to 12 minutes"
+  - "Runs at 15 Hz without fretting at the clamp"
+models:
+  - file: ./load-adapter.glb
+    title: "Load adapter"
+    caption: "Sample model generated for this template. Threads are modeled as grooves."
+---
+
+This is sample content. It shows a medium-length write-up with a gallery and a 3D
+model listed in the project's settings instead of in the text.
+
+## What it does
+
+The lab tests small sheet-metal brackets for 10⁶ cycles at 15 Hz. The old setup
+clamped each bracket with a vise and shims, took 40 minutes to align, and the shims
+fretted loose partway through long runs.
+
+The new fixture is a steel base with a locating pin and two clamp bars. A turned load
+adapter threads into the load cell on one side and pins to the bracket on the other,
+so the load path stays on the actuator's axis.
+
+## Parts
+
+<Gallery>
+
+![Load adapter seen from above, showing the stud and center hole.](./fixture-1.jpg "Adapter, top")
+![Load adapter in black oxide, seen from the side.](./fixture-2.jpg "Black-oxide finish for the production set")
+![Load adapter from a high angle, looking down into the threaded stud.](./fixture-3.jpg)
+![Load adapter in blue anodize, seen nearly edge-on.](./fixture-4.jpg "Anodized aluminum prototype")
+
+</Gallery>
+
+## Results so far
+
+- Alignment is now set by the locating pin, so setup takes 12 minutes.
+- Three brackets have run to 10⁶ cycles with no clamp slip.
+- [[TODO: Add the measured misalignment once the dial-indicator check is done.]]

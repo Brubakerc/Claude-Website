@@ -1,0 +1,171 @@
+---
+import { Image } from "astro:assets";
+import { render } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import Figure from "../../components/Figure.astro";
+import Gallery from "../../components/Gallery.astro";
+import KeyDecision from "../../components/KeyDecision.astro";
+import SpecTable from "../../components/SpecTable.astro";
+import Model3D from "../../components/Model3D.astro";
+import Callout from "../../components/Callout.astro";
+import { getProjects, type Project } from "../../lib/projects";
+import { statusLabel, todo, url } from "../../lib/util";
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  const total = projects.length;
+  return projects.map((entry, i) => {
+    // Wrap around so there is always a next project to click through to.
+    const prev = total > 1 ? projects[(i - 1 + total) % total] : undefined;
+    const next = total > 1 ? projects[(i + 1) % total] : undefined;
+    return { params: { slug: entry.id }, props: { entry, prev: prev === next ? undefined : prev, next, number: i + 1, total } };
+  });
+}
+
+interface Props {
+  entry: Project;
+  prev?: Project;
+  next?: Project;
+  number: number;
+  total: number;
+}
+const { entry, prev, next, number, total } = Astro.props;
+const { data } = entry;
+
+// Lets <Model3D> in the body find files in this project's folder.
+Astro.locals.project = { id: entry.id, cover: data.cover };
+const { Content } = await render(entry);
+const components = { Figure, Gallery, KeyDecision, SpecTable, Model3D, Callout };
+---
+
+<Base title={data.title} description={data.summary} image={data.cover.src}>
+  <article class="project">
+    <header class="project__header">
+      <div class="project__intro wrap">
+        <p class="project__back"><a href={url("projects/")}>All projects</a></p>
+        <h1 class="project__title" set:html={todo(data.title)} />
+        <p class="project__summary" set:html={todo(data.summary)} />
+      </div>
+
+      <figure class="project__cover">
+        <Image
+          class="project__cover-image vt-cover"
+          style={`--vt: cover-${entry.id}`}
+          src={data.cover}
+          alt={data.coverAlt}
+          widths={[640, 960, 1280, 1920, 2400]}
+          sizes="(min-width: 90rem) 90rem, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </figure>
+
+      <div class="project__facts wrap">
+        <dl class="titleblock">
+          {
+            data.role && (
+              <div class="titleblock__cell">
+                <dt>Role</dt>
+                <dd set:html={todo(data.role)} />
+              </div>
+            )
+          }
+          {
+            data.dates && (
+              <div class="titleblock__cell">
+                <dt>Dates</dt>
+                <dd set:html={todo(data.dates)} />
+              </div>
+            )
+          }
+          <div class="titleblock__cell">
+            <dt>Status</dt>
+            <dd><span class={`status status--${data.status}`}>{statusLabel[data.status]}</span></dd>
+          </div>
+          <div class="titleblock__cell titleblock__cell--number">
+            <dt>Project</dt>
+            <dd>{number} of {total}</dd>
+          </div>
+          {
+            data.tags.length > 0 && (
+              <div class="titleblock__cell titleblock__cell--tags">
+                <dt>Tags</dt>
+                <dd>{data.tags.join(", ")}</dd>
+              </div>
+            )
+          }
+        </dl>
+
+        {
+          data.highlights && data.highlights.length > 0 && (
+            <aside class="highlights" aria-labelledby="highlights-heading">
+              <h2 class="highlights__title" id="highlights-heading">Highlights</h2>
+              <ul>
+                {data.highlights.map((h) => (
+                  <li set:html={todo(h)} />
+                ))}
+              </ul>
+            </aside>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="prose project__body">
+      {
+        data.confidential && (
+          <Callout type="confidential">
+            <p set:html={todo(data.confidential)} />
+          </Callout>
+        )
+      }
+      <Content components={components} />
+
+      {
+        data.models && data.models.length > 0 && (
+          <section class="project__models" aria-labelledby="models-heading">
+            <h2 id="models-heading">{data.models.length === 1 ? "3D model" : "3D models"}</h2>
+            {data.models.map((m) => (
+              <Model3D file={m.file} title={m.title} caption={m.caption} />
+            ))}
+          </section>
+        )
+      }
+
+      {
+        data.links && data.links.length > 0 && (
+          <section class="project__links" aria-labelledby="links-heading">
+            <h2 id="links-heading">Links</h2>
+            <ul>
+              {data.links.map((l) => (
+                <li>
+                  <a href={url(l.url)} set:html={todo(l.label)} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )
+      }
+    </div>
+
+    <nav class="pager wrap" aria-label="More projects">
+      {
+        prev && (
+          <a class="pager__link pager__link--prev press" href={url(`projects/${prev.id}/`)} rel="prev">
+            <span class="pager__label">Previous project</span>
+            <span class="pager__title" set:html={todo(prev.data.title)} />
+          </a>
+        )
+      }
+      {
+        next && (
+          <a class="pager__link pager__link--next press" href={url(`projects/${next.id}/`)} rel="next">
+            <span class="pager__label">Next project</span>
+            <span class="pager__title" set:html={todo(next.data.title)} />
+          </a>
+        )
+      }
+      <a class="pager__all press" href={url("projects/")}>All projects</a>
+    </nav>
+  </article>
+</Base>

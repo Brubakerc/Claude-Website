@@ -1,0 +1,66 @@
+# Builds the site on every push. Publishes it to GitHub Pages only from `main`.
+# Turn on Pages once: Settings → Pages → Source: "GitHub Actions".
+# If a build fails, open the Actions tab, click the red run, then the "build" step
+# to read the error. docs/HOW_TO_ADD_A_PROJECT.md explains the common ones.
+name: Build and deploy
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install
+        # Uses package-lock.json when present, otherwise resolves fresh.
+        run: if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+      - name: Build
+        run: npm run build
+      - name: Check internal links
+        run: node scripts/check-links.mjs
+      - name: Check home page weight
+        run: node scripts/page-weight.mjs
+      - name: Test helpers
+        run: npm test
+      - name: Upload site
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+      - name: Check the build with the style picker turned off
+        # Runs after the upload, so the published site is unaffected.
+        run: |
+          sed -i 's/showStyleSwitcher: true/showStyleSwitcher: false/' src/site.config.ts
+          npm run build
+          if grep -q 'style-switcher' dist/index.html; then echo "Style picker still present"; exit 1; fi
+          styles=$(cat dist/_astro/*.css | grep -oE 'data-style="?(apple|drawing|shop|editorial)' | tr -d '"' | sort -u | wc -l)
+          if [ "$styles" -gt 1 ]; then echo "Other styles' CSS still included"; exit 1; fi
+          echo "OK: picker and other styles left out."
+
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

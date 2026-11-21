@@ -1,0 +1,72 @@
+---
+// A 3D model you can rotate and zoom. Put the .glb file in the project's folder:
+//   <Model3D file="./part.glb" title="Output hub" caption="Final revision, 6061-T6." />
+// The project's cover image shows while the model loads, and if 3D isn't available.
+import { getImage } from "astro:assets";
+import { todo } from "../lib/util";
+
+interface Props {
+  file: string;
+  title: string;
+  caption?: string;
+}
+const { file, title, caption } = Astro.props;
+
+const models = import.meta.glob<string>("/src/content/projects/**/*.glb", {
+  query: "?url",
+  import: "default",
+  eager: true,
+});
+const project = Astro.locals.project;
+const name = file.replace(/^\.\//, "");
+const src =
+  (project && models[`/src/content/projects/${project.id}/${name}`]) ??
+  Object.entries(models).find(([path]) => path.endsWith(`/${name}`))?.[1];
+if (!src) {
+  throw new Error(
+    `<Model3D file="${file}"> couldn't find that file. Put the .glb file in the same folder as the ` +
+      `project's index.mdx and check the spelling (capital letters matter).`,
+  );
+}
+const poster = project ? await getImage({ src: project.cover, width: 1200, format: "webp" }) : undefined;
+---
+
+<figure class="model3d">
+  <model-viewer
+    class="model3d__viewer"
+    src={src}
+    alt={`3D model: ${title}`}
+    camera-controls
+    touch-action="pan-y"
+    interaction-prompt="none"
+    loading="lazy"
+    reveal="auto"
+    environment-image="neutral"
+    shadow-intensity="0.7"
+  >
+    {poster && <img slot="poster" class="model3d__poster" src={poster.src} alt="" decoding="async" loading="lazy" />}
+    <div slot="progress-bar" class="model3d__loading" role="status">
+      <span class="model3d__bar"></span>
+      <span class="model3d__label">Loading 3D model</span>
+    </div>
+  </model-viewer>
+  <figcaption>
+    <span class="model3d__title" set:html={todo(title)} />
+    {caption && <span set:html={todo(caption)} />}
+    <span class="model3d__hint">Drag to rotate. Pinch or scroll to zoom.</span>
+  </figcaption>
+</figure>
+
+<script>
+  import "@google/model-viewer";
+
+  for (const viewer of document.querySelectorAll<HTMLElement>(".model3d__viewer")) {
+    const bar = viewer.querySelector<HTMLElement>(".model3d__bar");
+    viewer.addEventListener("progress", (event) => {
+      const done = (event as CustomEvent<{ totalProgress: number }>).detail.totalProgress;
+      if (bar) bar.style.transform = `scaleX(${done})`;
+      viewer.toggleAttribute("data-loaded", done >= 1);
+    });
+    viewer.addEventListener("error", () => viewer.setAttribute("data-error", ""));
+  }
+</script>
